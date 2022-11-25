@@ -11,19 +11,21 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
     <script type="module">
       import { createRoot } from '../src/react-dom.js'
-      createRoot(document.getElementById('root')).render(
-        /*#__PURE__*/ React.createElement(
-          'div',
+      ;('use strict')
+
+      function App() {
+        return /*#__PURE__*/ React.createElement(
+          React.Fragment,
           null,
           /*#__PURE__*/ React.createElement(
             'h2',
             {
-              title: document.title,
+              title: 123,
             },
             '\u6211\u662F\u6807\u9898'
           ),
           /*#__PURE__*/ React.createElement('img', {
-            src: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202106%2F28%2F20210628204020_17863.thumb.1000_0.jpg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1671950416&t=caf73574fbb8d6e7583549bdc1997c84',
+            src: 213,
             alt: '\u56FE\u7247',
           }),
           /*#__PURE__*/ React.createElement(
@@ -43,7 +45,45 @@
             '\u7ED1\u5B9A\u6837\u5F0F'
           )
         )
+      }
+      /*#__PURE__*/
+      createRoot(document.getElementById('root')).render(
+        React.createElement(App, null)
       )
+
+      // createRoot(document.getElementById('root')).render(
+      //   /*#__PURE__*/ React.createElement(
+      //     'div',
+      //     null,
+      //     /*#__PURE__*/ React.createElement(
+      //       'h2',
+      //       {
+      //         title: document.title,
+      //       },
+      //       '\u6211\u662F\u6807\u9898'
+      //     ),
+      //     /*#__PURE__*/ React.createElement('img', {
+      //       src: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202106%2F28%2F20210628204020_17863.thumb.1000_0.jpg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1671950416&t=caf73574fbb8d6e7583549bdc1997c84',
+      //       alt: '\u56FE\u7247',
+      //     }),
+      //     /*#__PURE__*/ React.createElement(
+      //       'p',
+      //       {
+      //         className: 'content',
+      //       },
+      //       '\u6211\u662F\u5185\u5BB9'
+      //     ),
+      //     /*#__PURE__*/ React.createElement(
+      //       'p',
+      //       {
+      //         style: {
+      //           color: 'red',
+      //         },
+      //       },
+      //       '\u7ED1\u5B9A\u6837\u5F0F'
+      //     )
+      //   )
+      // )
     </script>
   </body>
 </html>

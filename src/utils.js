@@ -20,6 +20,10 @@ export const isArray = arr => {
   return Array.isArray(arr)
 }
 
+export const isUndefined = t => {
+  return typeof t === 'undefined'
+}
+
 export const updateNode = (node, prevVal, nextVal) => {
   Object.keys(nextVal).forEach(k => {
     if (k === 'children') {

@@ -74,13 +74,25 @@ export const workLoop = IdleDeadline => {
   }
 }
 
+const getParentNode = wip => {
+  let temp = wip
+
+  while (temp) {
+    if (temp.stateNode) {
+      return temp.stateNode
+    }
+    temp = temp.return
+  }
+}
+
 export const commitWorker = wip => {
   if (!wip) {
     return
   }
 
   // 提交自己
-  const parentNode = wip.return.stateNode
+  // const parentNode = wip.return.stateNode
+  const parentNode = getParentNode(wip.return)
   const { flags, stateNode } = wip
   if (flags & Placement && stateNode) {
     parentNode.appendChild(stateNode)

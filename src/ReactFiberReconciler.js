@@ -29,7 +29,12 @@ const reconcileChildren = (wip, children) => {
   }
 }
 
-export const updateFunctionComponent = () => {}
+export const updateFunctionComponent = wip => {
+  const { props, type } = wip
+  const children = type(props)
+
+  reconcileChildren(wip, children)
+}
 
 export const updateHostComponent = wip => {
   if (!wip.stateNode) {
@@ -41,8 +46,19 @@ export const updateHostComponent = wip => {
   reconcileChildren(wip, wip.props.children)
 }
 
-export const updateClassComponent = () => {}
+export const updateClassComponent = wip => {
+  const { props, type } = wip
+  const instance = new type(props)
+  const children = instance.render()
 
-export const updateFragmentComponent = () => {}
+  reconcileChildren(wip, children)
+}
 
-export const updateHostTextComponent = () => {}
+export const updateFragmentComponent = wip => {
+  const { props } = wip
+  reconcileChildren(wip, props.children)
+}
+
+export const updateHostTextComponent = wip => {
+  wip.stateNode = document.createTextNode(wip.props.children)
+}

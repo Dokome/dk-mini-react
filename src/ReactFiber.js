@@ -1,5 +1,11 @@
-import { FunctionComponent, HostComponent } from './ReactWorkTags.js'
-import { isFn, isStr, Placement } from './utils.js'
+import {
+  ClassComponent,
+  Fragment,
+  FunctionComponent,
+  HostComponent,
+  HostText,
+} from './ReactWorkTags.js'
+import { isFn, isStr, isUndefined, Placement } from './utils.js'
 
 export function createFiber(vnode, returnFiber) {
   const { type, key, props } = vnode
@@ -34,7 +40,14 @@ export function createFiber(vnode, returnFiber) {
     fiber.tag = HostComponent
   } else if (isFn(type)) {
     // 函数组件和类组件的
-    fiber.tag = FunctionComponent
+    fiber.tag = type.prototype.isReactComponent
+      ? ClassComponent
+      : FunctionComponent
+  } else if (isUndefined(type)) {
+    fiber.tag = HostText
+    fiber.props = { children: vnode }
+  } else {
+    fiber.tag = Fragment
   }
 
   return fiber

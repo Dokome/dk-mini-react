@@ -13,6 +13,7 @@ import {
   HostText,
 } from './ReactWorkTags.js'
 import { Placement } from './utils.js'
+import { scheduleCallback } from './scheduler/index.js'
 
 // work in progress 当前正在工作中的 fiber
 let wip = null
@@ -22,7 +23,8 @@ let wipRoot = null
 export const scheduleUpdateOnFiber = fiber => {
   wip = fiber
   wipRoot = fiber
-  requestIdleCallback(workLoop)
+  // requestIdleCallback(workLoop)
+  scheduleCallback(workLoop)
 }
 
 export const performUnitOfWork = () => {
@@ -64,8 +66,8 @@ export const performUnitOfWork = () => {
   wip = null
 }
 
-export const workLoop = IdleDeadline => {
-  while (wip && IdleDeadline.timeRemaining() > 0) {
+export const workLoop = () => {
+  while (wip /* && IdleDeadline.timeRemaining() > 0 */) {
     performUnitOfWork()
   }
 

@@ -34,6 +34,10 @@ export function createFiber(vnode, returnFiber) {
     flags: Placement,
     /* 记录节点在当前层级下的位置 */
     index: null,
+    /* older fiber */
+    alternate: null,
+    /* hook memorizedState */
+    memorizedState: null,
   }
 
   if (isStr(type)) {

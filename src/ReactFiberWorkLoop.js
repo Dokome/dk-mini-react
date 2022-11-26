@@ -12,7 +12,7 @@ import {
   HostComponent,
   HostText,
 } from './ReactWorkTags.js'
-import { Placement } from './utils.js'
+import { Placement, Update, updateNode } from './utils.js'
 import { scheduleCallback } from './scheduler/index.js'
 
 // work in progress 当前正在工作中的 fiber
@@ -98,6 +98,9 @@ export const commitWorker = wip => {
   const { flags, stateNode } = wip
   if (flags & Placement && stateNode) {
     parentNode.appendChild(stateNode)
+  } else if (flags & Update && stateNode) {
+    // 更新属性
+    updateNode(stateNode, wip.alternate.props, wip.props)
   }
 
   // 提交子节点

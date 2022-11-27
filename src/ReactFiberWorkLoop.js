@@ -19,6 +19,25 @@ import { scheduleCallback } from './scheduler/index.js'
 let wip = null
 let wipRoot = null
 
+//
+export const invokeHooks = wip => {
+  const { updateQueueOfEffect, updateQueueOfLayoutEffect } = wip
+
+  for (let i = 0; i < updateQueueOfLayoutEffect; i++) {
+    const effect = updateQueueOfLayoutEffect[i]
+    effect.create()
+  }
+
+  // 异步执行
+  for (let i = 0; i < updateQueueOfEffect; i++) {
+    const effect = updateQueueOfEffect[i]
+
+    scheduleCallback(() => {
+      effect.create()
+    })
+  }
+}
+
 // 初次渲染或更新
 export const scheduleUpdateOnFiber = fiber => {
   wip = fiber
@@ -142,6 +161,10 @@ export const commitWorker = wip => {
   if (wip.deletions) {
     // 删除 wip 的子节点
     commitDeletions(wip.deletions, stateNode || parentNode)
+  }
+
+  if (wip.tag === FunctionComponent) {
+    invokeHooks(wip)
   }
 
   // 提交子节点

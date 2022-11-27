@@ -87,6 +87,40 @@ const getParentNode = wip => {
   }
 }
 
+const getStateNode = fiber => {
+  let temp = fiber
+  while (!temp.stateNode) {
+    temp = temp.child
+  }
+
+  return temp.stateNode
+}
+
+const commitDeletions = (deletions, parentNode) => {
+  for (let i = 0; i < deletions.length; i++) {
+    parentNode.removeChild(getStateNode(deletions[i]))
+  }
+}
+
+const getHostSibling = sibling => {
+  while (sibling) {
+    if (sibling.stateNode && !(sibling.flags & Placement)) {
+      return sibling.stateNode
+    }
+    sibling = sibling.sibling
+  }
+
+  return null
+}
+
+const insertOrAppendPlacementNode = (stateNode, before, parentNode) => {
+  if (before) {
+    parentNode.insertBefore(stateNode)
+  } else {
+    parentNode.appendChild(stateNode)
+  }
+}
+
 export const commitWorker = wip => {
   if (!wip) {
     return
@@ -97,10 +131,17 @@ export const commitWorker = wip => {
   const parentNode = getParentNode(wip.return)
   const { flags, stateNode } = wip
   if (flags & Placement && stateNode) {
+    const before = getHostSibling(wip.sibling)
+    insertOrAppendPlacementNode(stateNode, before, parentNode)
     parentNode.appendChild(stateNode)
   } else if (flags & Update && stateNode) {
     // 更新属性
     updateNode(stateNode, wip.alternate.props, wip.props)
+  }
+
+  if (wip.deletions) {
+    // 删除 wip 的子节点
+    commitDeletions(wip.deletions, stateNode || parentNode)
   }
 
   // 提交子节点
